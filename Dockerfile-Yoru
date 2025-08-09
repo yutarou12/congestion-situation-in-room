@@ -1,0 +1,9 @@
+FROM python:3.10-buster
+
+WORKDIR /app
+COPY requirements-yoru.txt /app/requirements.txt
+
+RUN apt -y update && apt -y install libopencv-dev && python -m pip install --upgrade pip setuptools wheel
+RUN if [ -f /app/requirements.txt ]; then python -m pip install -r /app/requirements.txt; fi
+
+ENTRYPOINT ["python", "main-yoru.py"]

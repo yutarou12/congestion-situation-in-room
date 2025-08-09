@@ -1,0 +1,45 @@
+services:
+  api:
+    restart: always
+    build:
+      context: "."
+      dockerfile: "Dockerfile-Api"
+    container_name: "api"
+    env_file:
+      - .env
+    ports:
+      - 8085:8082
+    volumes:
+      - ./:/app/
+    working_dir: "/app/"
+    tty: true
+    networks:
+      - app-birn-net
+  yoru:
+    restart: always
+    build:
+      context: "."
+      dockerfile: "Dockerfile-Yoru"
+    depends_on:
+      api:
+        condition: service_started
+    container_name: "yoru"
+    volumes:
+      - ./:/app/
+    working_dir: "/app/"
+    tty: true
+    networks:
+      - app-birn-net
+  tunnel:
+    restart: unless-stopped
+    image: cloudflare/cloudflared
+    command:
+      - tunnel
+      - --no-autoupdate
+      - run
+    networks:
+      - app-birn-net
+
+networks:
+  app-birn-net:
+    driver: bridge
