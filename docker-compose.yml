@@ -39,10 +39,10 @@ services:
       - tunnel
       - --no-autoupdate
       - run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
     networks:
       - app-birn-net
-    env_file:
-      - .env
 
 networks:
   app-birn-net:
