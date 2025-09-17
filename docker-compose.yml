@@ -20,6 +20,8 @@ services:
     build:
       context: "."
       dockerfile: "Dockerfile-Yoru"
+    env_file:
+      - .env
     depends_on:
       api:
         condition: service_started
@@ -39,6 +41,8 @@ services:
       - run
     networks:
       - app-birn-net
+    env_file:
+      - .env
 
 networks:
   app-birn-net:
